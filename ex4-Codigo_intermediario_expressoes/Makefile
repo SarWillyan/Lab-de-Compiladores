@@ -15,3 +15,5 @@ lex.yy.c:  calc.l
 calc.tab.c:   calc.y
 	bison -d calc.y -o calc.tab.c
 	
+clear: 
+	$ rm -f *.o *.h *.c calc

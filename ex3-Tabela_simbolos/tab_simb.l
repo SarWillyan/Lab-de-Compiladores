@@ -1,19 +1,17 @@
 %{ 
-    #include <stdio.h>
-    #include <stdlib.h> 
-    void yyerror(char *); 
+    void yyerror(const char *); 
     #include "tab_simb.tab.h" 
 %} 
 
 %% 
 
-[a-z]       { 	yylval = *yytext - 'a';
-		printf("Variavel: %c - indice %d\n",yytext[0], yylval); 
+[a-z]+       { 	strcpy(yylval.id, yytext);
+		printf("Variavel: %s - indice %d\n",yytext, yylval.num); 
                 return VARIABLE; } 
-[0-9]+      { 	yylval = atoi(yytext);
-		printf("Valor inteiro: %d\n",yylval);
+[0-9]+      { 	yylval.num = atoi(yytext);
+		printf("Valor inteiro: %d\n",yylval.num);
                 return INTEGER; } 
-[-+()=/*\n] { 	
+[-+()=*/\n] { 	
 		printf("Operador: %c\n", yytext[0]);
 		return *yytext; } 
 

@@ -1,0 +1,13 @@
+var a: int;
+var b: int;
+var c: int;
+{ 
+ read a;
+ read b;
+ while (a > 0) do 
+ {
+   write a ;
+   a = a - 1;
+ 
+ }
+}

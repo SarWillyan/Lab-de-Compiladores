@@ -1,0 +1,6 @@
+var a: int;
+var b: int;
+var c: int;
+{ 
+ a  = b;
+}

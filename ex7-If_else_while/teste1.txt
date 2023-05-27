@@ -1,0 +1,21 @@
+var a: int;
+var b: int;
+var c: int;
+var d: float;
+{ 
+ read a;
+ read b;
+ if (a > 0) then
+ {
+ 
+    write a;
+    
+ }   
+ else
+ {
+     write b;
+ 
+ }
+ a  = b;
+ write a;
+}

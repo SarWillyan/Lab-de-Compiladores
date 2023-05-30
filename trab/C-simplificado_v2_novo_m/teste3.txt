@@ -1,0 +1,36 @@
+float total;
+float media;
+int impar;
+string empresa;
+{
+    string nome;
+    float x;
+    float y;
+    
+    read(x);
+    read(y);
+    total = x + y;
+    media = total / 2;
+    impar = 0;
+    while (total > 0)
+    {
+        if (impar == 0)
+        {
+            impar = 1;
+        }
+        else
+        {
+            impar = 0;
+        }
+        total = total - 1;
+    }
+    
+    if (impar == 1)
+    {
+        write( "impar");
+    }
+    else
+    {
+        write( "par");
+    }
+}

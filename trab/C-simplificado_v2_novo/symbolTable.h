@@ -42,7 +42,8 @@ struct symTable
 };
 typedef struct symTable SymTable;
 
-extern SymTable table;
+extern SymTable tableGlobal;
+extern SymTable tableLocal;
 
 //Prototipos das funcoes
 int initSymTable(SymTable* table);

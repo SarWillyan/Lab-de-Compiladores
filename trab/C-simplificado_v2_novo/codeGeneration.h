@@ -5,6 +5,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#define TRUE 1
+#define FALSE 0
 
 // Tamanho de um string nao inicializada
 #define STRING_SIZE 256

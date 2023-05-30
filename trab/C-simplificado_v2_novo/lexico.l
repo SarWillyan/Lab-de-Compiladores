@@ -108,6 +108,13 @@ digit [0-9]
 	return ID;
 }
 
+["']({letter}|{digit}|_|[ ]|:|.)*["']	 {
+	
+	strcpy(yylval.c.str, yytext);
+	printf("literal reconhecido %s\n", yytext);
+	return LITERAL_STR;
+}
+
 [-;:={}+*()<>/%] {
 	printf("Lexic: %c found\n", *yytext);
 	// strcpy(yylval.str, yytext);
@@ -119,6 +126,7 @@ digit [0-9]
 
 \n\r             { cont_lines++; }
 \r\n             { cont_lines++; }
+\n				 { cont_lines++; }
 
 
 . { yyerror("Invalid character"); }

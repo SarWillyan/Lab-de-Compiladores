@@ -12,7 +12,8 @@
 FILE* out_file = NULL;
 
 
-SymTable table;
+SymTable tableGlobal;
+SymTable tableLocal;
 
                      // -4    -3    -2     -1    0     1     2    3     4      5
 char jumps[10][4] = {"jnl", "jng", "jne", "jnz", "", "jz", "je", "jg", "jl", "jmp"};
@@ -72,7 +73,8 @@ int main(int argc, char const *argv[])
     
     
     
-    initSymTable(&table);
+    initSymTable(&tableGlobal);
+    initSymTable(&tableLocal);
 
 
     FILE* teclado = stdin;
@@ -89,8 +91,10 @@ int main(int argc, char const *argv[])
     fprintf(out_file, "mov rax,0\n");  
     fprintf(out_file, "ret\n");
 
-
-    printSymTable(&table);
+    printf("-------------- TABELA GLOBAL -------------- \n");
+    printSymTable(&tableGlobal);
+    printf("-------------- TABELA LOCAL -------------- \n");
+    printSymTable(&tableLocal);
 
     fclose(out_file);
     fclose(stdin);

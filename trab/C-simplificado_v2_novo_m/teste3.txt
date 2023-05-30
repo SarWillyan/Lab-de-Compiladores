@@ -1,9 +1,7 @@
 float total;
 float media;
 int impar;
-string empresa;
 {
-    string nome;
     float x;
     float y;
     
@@ -24,13 +22,5 @@ string empresa;
         }
         total = total - 1;
     }
-    
-    if (impar == 1)
-    {
-        write( "impar");
-    }
-    else
-    {
-        write( "par");
-    }
+
 }

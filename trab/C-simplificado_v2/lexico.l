@@ -108,7 +108,7 @@ digit [0-9]
 	return ID;
 }
 
-["']({letter}|{digit}|_|[ ]|:)*["']	 {
+["']({letter}|{digit}|_|[ ]|:|.)*["']	 {
 	
 	strcpy(yylval.c.str, yytext);
 	printf("literal reconhecido %s\n", yytext);

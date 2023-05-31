@@ -17,7 +17,7 @@ main.o:  main.c
 	gcc -c main.c -g
 
 codeGeneration.o: codeGeneration.c 
-	gcc -c codeGeneration.c -g
+	gcc -c codeGeneration.c -g 
 	
 symbolTable.o: symbolTable.c
 	gcc -c symbolTable.c -g

@@ -1,5 +1,3 @@
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,12 +68,26 @@ void dumpCodeDeclarationEnd()
 
 
 // Codigo para leitura (scanf)
-int makeCodeRead(char* dest, char *id)
+int makeCodeRead(char* dest, char *id, int ln) // adicionar regra para string que não seja variável
 {
-    SymTableEntry* ret = findSymTable(&table,id);
-    
-    dest[0] = '\0';
+    //SymTableEntry* ret = NULL;
+    //if (local == TRUE) {
+    //    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    //} else {
+    //    SymTableEntry* ret = findSymTable(&tableLocal,id);
+    //}
 
+    if (ln == 2)
+        return 1;
+    
+    //  Pesquisa variável na tabela global
+    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    // Caso não exista na tabela global, pesquisa na local 
+    if (ret == NULL) 
+        ret = findSymTable(&tableLocal,id);
+
+    dest[0] = '\0';
+    // Se ret for NULL, a variaável não existe em nenhuma das tabelas
     if (ret == NULL)
     {
         fprintf(stderr, "Error: %s not recognized at line %d\n", id, cont_lines);
@@ -87,13 +99,11 @@ int makeCodeRead(char* dest, char *id)
         sprintf(dest + strlen(dest), "mov rdi,fmt_d\n");
         sprintf(dest + strlen(dest), "mov rsi,%s\n", ret->identifier);
     }
-
     else if (ret->type == REAL)
     {
         sprintf(dest + strlen(dest), "mov rdi,fmt_f\n");
         sprintf(dest + strlen(dest), "mov rsi,%s\n", ret->identifier);
     }
-
     else
     {
         sprintf(dest + strlen(dest), "mov rdi,fmt_s\n");
@@ -110,14 +120,23 @@ int makeCodeRead(char* dest, char *id)
 
 
 // Codigo para escrita (printf)
-int makeCodeWrite(char* dest, char *id, int ln)
+int makeCodeWrite(char* dest, char *id, int ln) // adicionar regra para string que não seja variável
 {
-
-    if (ln == 2 ) {
-        return 1;
-    }
-    SymTableEntry* ret = findSymTable(&table, id);
+    //SymTableEntry* ret = NULL;
+    //if (local == TRUE) {
+    //    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    //} else {
+    //    SymTableEntry* ret = findSymTable(&tableLocal,id);
+    //}
     
+    if (ln == 2)
+        return 1;
+
+    SymTableEntry* ret = NULL;
+    ret = findSymTable(&tableGlobal,id);
+    if (ret == NULL) 
+        ret = findSymTable(&tableLocal,id);
+
     dest[0] = '\0';
 
     if (ret == NULL)
@@ -140,13 +159,6 @@ int makeCodeWrite(char* dest, char *id, int ln)
         sprintf(dest + strlen(dest), "mov rsi,[%s]\n", ret->identifier);
     }
 
-    else if (ret->type == STRING)
-    {
-        if (ln) sprintf(dest + strlen(dest), "mov rdi,fmt_fln\n");
-        else sprintf(dest + strlen(dest), "mov rdi,fmt_f\n");
-        sprintf(dest + strlen(dest), "mov rsi,[%s]\n", ret->identifier);
-    }
-
     else
     {
         if (ln) sprintf(dest + strlen(dest), "mov rdi,fmt_sln\n");
@@ -161,9 +173,20 @@ int makeCodeWrite(char* dest, char *id, int ln)
 }
 
 
+
 int makeCodeAssignment(char* dest, char* id, char* expr)
 {   
-    SymTableEntry* ret = findSymTable(&table, id);
+    //SymTableEntry* ret = NULL;
+    //if (local == TRUE) {
+    //    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    //} else {
+    //    SymTableEntry* ret = findSymTable(&tableLocal,id);
+    //}
+
+    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    if (ret == NULL) 
+        ret = findSymTable(&tableLocal,id);
+
     dest[0] = '\0';
 
     if (ret == NULL)
@@ -193,12 +216,16 @@ int makeCodeAssignment(char* dest, char* id, char* expr)
     }
     else
     {
-        fprintf(stderr, "Unsuported operation at line %d\n", cont_lines);
+        fprintf(stderr, "Unsuported operation at line %d\n",
+            cont_lines);
         return 0;
     }
 
     return 1;
 }
+
+
+
 
 
 int makeCodeLoad(char* dest, char* id, int ref)
@@ -212,7 +239,16 @@ int makeCodeLoad(char* dest, char* id, int ref)
         return 1;
     }
 
-    SymTableEntry* ret = findSymTable(&table, id);
+    //SymTableEntry* ret = NULL;
+    //if (local == TRUE) {
+    //    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    //} else {
+    //    SymTableEntry* ret = findSymTable(&tableLocal,id);
+    //}
+
+    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    if (ret == NULL) 
+        ret = findSymTable(&tableLocal,id);
 
     if (ret == NULL)
     {
@@ -284,7 +320,17 @@ void makeCodeMod(char* dest, char* value2)
 
 int makeCodeComp(char* dest, char* id, char* expr)
 {
-    SymTableEntry* ret = findSymTable(&table, id);
+    //SymTableEntry* ret = NULL;
+    //if (local == TRUE) {
+    //    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    //} else {
+    //    SymTableEntry* ret = findSymTable(&tableLocal,id);
+    //}
+
+    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    if (ret == NULL) 
+        ret = findSymTable(&tableLocal,id);
+
     dest[0] = '\0';
 
     if (ret == NULL)
@@ -293,9 +339,10 @@ int makeCodeComp(char* dest, char* id, char* expr)
         return 0;
     }
 
-    if (ret->type != INTEGER && ret->type != REAL && ret->type != STRING)
+    if (ret->type == STRING)
     {
-        fprintf(stderr, "Unsuported operation at line %d\n", cont_lines);
+        fprintf(stderr, "Unsuported operation envolving string at line %d\n",
+            cont_lines);
         return 0;
     }
 
@@ -316,7 +363,8 @@ void makeCodeIf(char* dest, char* expr_code, int expr_jump, char* block_code)
     dest[0] = '\0';
 
     sprintf(dest + strlen(dest), "%s", expr_code);
-    sprintf(dest + strlen(dest), "%s %s\n", jumps[expr_jump + JUMPS_ARRAY_OFFSET], label);
+    sprintf(dest + strlen(dest), "%s %s\n", jumps[expr_jump + JUMPS_ARRAY_OFFSET],
+        label);
     sprintf(dest + strlen(dest), "%s", block_code);
     sprintf(dest + strlen(dest), "%s:\n", label);
 }

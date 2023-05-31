@@ -1,30 +1,40 @@
-float x = 5.0;
-float y = 5.0;
 float total;
 float media;
 int impar;
-string fac;
+string empresa;
 {
-    read ( x ) ;
-    read ( y ) ;
-
-    total = x + y ;
-    media = total / 2 ;
-
-    write ( media ) ;
-
-    impar = 0 ;
+    string nome;
+    float x;
+    float y;
     
-    while ( total > 0 ) {
-        
-        if ( impar == 0 ) {
-            impar = 1 ;
-        } else {
-            impar = 0 ;
+    write( empresa );
+    read(nome);
+    read(x);
+    read(y);
+    total = x + y;
+    media = total / 2;
+    impar = 0;
+    while (total > 0)
+    {
+        if (impar == 0)
+        {
+            impar = 1;
         }
-        
-        total = total -1;
-    
+        else
+        {
+            impar = 0;
+        }
+        total = total - 1;
     }
-    write ( impar ) ;
+    write(empresa);
+    write(nome);
+    write(media);
+    if (impar == 1)
+    {
+        write( impar);
+    }
+    else
+    {
+        write( impar);
+    }
 }

@@ -22,7 +22,7 @@ void makeLabel(char* out_label);
 void makeCodeDeclaration(char* dest, char* identifier, Type type, char* value);
 void dumpCodeDeclarationEnd();
 
-int makeCodeRead(char* dest, char *id);
+int makeCodeRead(char* dest, char *id, int ln);
 int makeCodeWrite(char* dest, char *id, int ln);
 
 int makeCodeAssignment(char* dest, char* id, char* expr);

@@ -68,7 +68,7 @@ void dumpCodeDeclarationEnd()
 
 
 // Codigo para leitura (scanf)
-int makeCodeRead(char* dest, char *id)
+int makeCodeRead(char* dest, char *id, int ln) // adicionar regra para string que não seja variável
 {
     //SymTableEntry* ret = NULL;
     //if (local == TRUE) {
@@ -76,6 +76,9 @@ int makeCodeRead(char* dest, char *id)
     //} else {
     //    SymTableEntry* ret = findSymTable(&tableLocal,id);
     //}
+
+    if (ln == 2)
+        return 1;
     
     //  Pesquisa variável na tabela global
     SymTableEntry* ret = findSymTable(&tableGlobal,id);
@@ -117,7 +120,7 @@ int makeCodeRead(char* dest, char *id)
 
 
 // Codigo para escrita (printf)
-int makeCodeWrite(char* dest, char *id, int ln)
+int makeCodeWrite(char* dest, char *id, int ln) // adicionar regra para string que não seja variável
 {
     //SymTableEntry* ret = NULL;
     //if (local == TRUE) {
@@ -126,7 +129,11 @@ int makeCodeWrite(char* dest, char *id, int ln)
     //    SymTableEntry* ret = findSymTable(&tableLocal,id);
     //}
     
-    SymTableEntry* ret = findSymTable(&tableGlobal,id);
+    if (ln == 2)
+        return 1;
+
+    SymTableEntry* ret = NULL;
+    ret = findSymTable(&tableGlobal,id);
     if (ret == NULL) 
         ret = findSymTable(&tableLocal,id);
 

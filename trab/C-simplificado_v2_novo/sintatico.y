@@ -172,7 +172,13 @@ comando: comando_escrita      { strcpy($$.str, $1.str); }
 
 comando_leitura: READ '(' ID ')' ';'  {
 		
-		if (!makeCodeRead($$.str, $3.str))
+		if (!makeCodeRead($$.str, $3.str, 0))
+			YYABORT;
+	}
+
+	| READ '(' LITERAL_STR ')' ';'  {
+		
+		if (!makeCodeRead($$.str, $3.str, 2))
 			YYABORT;
 	}
 ;
@@ -189,10 +195,28 @@ comando_escrita: WRITE '(' ID ')' ';'  {
 		if (!makeCodeWrite($$.str, $3.str, 1))
 			YYABORT;
 	}
+
+	| WRITE '(' LITERAL_STR ')' ';'  {
+
+		if (!makeCodeWrite($$.str, $3.str, 2))
+			YYABORT;
+	}
+
+	| WRITELN '(' LITERAL_STR ')' ';'  {
+
+		if (!makeCodeWrite($$.str, $3.str, 2))
+			YYABORT;
+	}
 ;
 
 
 comando_atribuicao: ID '=' expressao_numerica ';'  {
+		
+		if (!makeCodeAssignment($$.str, $1.str, $3.str))
+			YYABORT;
+	}
+
+	| ID '=' LITERAL_STR ';'  {
 		
 		if (!makeCodeAssignment($$.str, $1.str, $3.str))
 			YYABORT;

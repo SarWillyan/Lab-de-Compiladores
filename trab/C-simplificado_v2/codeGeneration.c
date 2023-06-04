@@ -68,10 +68,10 @@ void dumpCodeDeclarationEnd()
 int makeCodeRead(char *dest, char *id, int ln) // adicionar regra para string que não seja variável
 {
     //  Pesquisa variável na tabela global
-    SymTableEntry *ret = findSymTable(&tableGlobal, id);
+    SymTableEntry *ret = findSymTable(&tableLocal, id);
     // Caso não exista na tabela global, pesquisa na local
     if (ret == NULL)
-        ret = findSymTable(&tableLocal, id);
+        ret = findSymTable(&tableGlobal, id);
 
     dest[0] = '\0';
     // Se ret for NULL, a variaável não existe em nenhuma das tabelas
@@ -117,9 +117,9 @@ int makeCodeWrite(char *dest, char *id, int ln, int isID)
     else
     {
         SymTableEntry *ret = NULL;
-        ret = findSymTable(&tableGlobal, id);
+        ret = findSymTable(&tableLocal, id);
         if (ret == NULL)
-            ret = findSymTable(&tableLocal, id);
+            ret = findSymTable(&tableGlobal, id);
 
         dest[0] = '\0';
 
@@ -166,9 +166,9 @@ int makeCodeWrite(char *dest, char *id, int ln, int isID)
 int makeCodeAssignment(char *dest, char *id, char *expr, int isID)
 {
 
-    SymTableEntry *ret = findSymTable(&tableGlobal, id);
+    SymTableEntry *ret = findSymTable(&tableLocal, id);
     if (ret == NULL)
-        ret = findSymTable(&tableLocal, id);
+        ret = findSymTable(&tableGlobal, id);
 
     dest[0] = '\0';
 
@@ -226,9 +226,9 @@ int makeCodeLoad(char *dest, char *id, int ref)
         return 1;
     }
 
-    SymTableEntry *ret = findSymTable(&tableGlobal, id);
+    SymTableEntry *ret = findSymTable(&tableLocal, id);
     if (ret == NULL)
-        ret = findSymTable(&tableLocal, id);
+        ret = findSymTable(&tableGlobal, id);
 
     if (ret == NULL)
     {
@@ -294,16 +294,10 @@ void makeCodeMod(char *dest, char *value2)
 
 int makeCodeComp(char *dest, char *id, char *expr)
 {
-    // SymTableEntry* ret = NULL;
-    // if (local == TRUE) {
-    //     SymTableEntry* ret = findSymTable(&tableGlobal,id);
-    // } else {
-    //     SymTableEntry* ret = findSymTable(&tableLocal,id);
-    // }
 
-    SymTableEntry *ret = findSymTable(&tableGlobal, id);
+    SymTableEntry *ret = findSymTable(&tableLocal, id);
     if (ret == NULL)
-        ret = findSymTable(&tableLocal, id);
+        ret = findSymTable(&tableGlobal, id);
 
     dest[0] = '\0';
 

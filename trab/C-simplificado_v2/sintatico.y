@@ -176,35 +176,30 @@ comando_leitura: READ '(' ID ')' ';'  {
 			YYABORT;
 	}
 
-	| READ '(' LITERAL_STR ')' ';'  {
-		
-		if (!makeCodeRead($$.str, $3.str, 2))
-			YYABORT;
-	}
 ;
 
 
 comando_escrita: WRITE '(' ID ')' ';'  {
 
-		if (!makeCodeWrite($$.str, $3.str, 0))
+		if (!makeCodeWrite($$.str, $3.str, 0, TRUE))
 			YYABORT;
 	}
 
 	| WRITELN '(' ID ')' ';'  {
 
-		if (!makeCodeWrite($$.str, $3.str, 1))
+		if (!makeCodeWrite($$.str, $3.str, 1, TRUE))
 			YYABORT;
 	}
 
 	| WRITE '(' LITERAL_STR ')' ';'  {
 
-		if (!makeCodeWrite($$.str, $3.str, 2))
+		if (!makeCodeWrite($$.str, $3.str, 0, FALSE))
 			YYABORT;
 	}
 
 	| WRITELN '(' LITERAL_STR ')' ';'  {
 
-		if (!makeCodeWrite($$.str, $3.str, 2))
+		if (!makeCodeWrite($$.str, $3.str, 1, FALSE))
 			YYABORT;
 	}
 ;
@@ -212,13 +207,13 @@ comando_escrita: WRITE '(' ID ')' ';'  {
 
 comando_atribuicao: ID '=' expressao_numerica ';'  {
 		
-		if (!makeCodeAssignment($$.str, $1.str, $3.str))
+		if (!makeCodeAssignment($$.str, $1.str, $3.str, TRUE))
 			YYABORT;
 	}
 
 	| ID '=' LITERAL_STR ';'  {
 		
-		if (!makeCodeAssignment($$.str, $1.str, $3.str))
+		if (!makeCodeAssignment($$.str, $1.str, $3.str, FALSE))
 			YYABORT;
 	}
 ;
